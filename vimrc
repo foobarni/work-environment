@@ -26,3 +26,73 @@ set wrap " Wrap lines without inserting line breaks
 
 " Colors
 :syntax on " Syntax highlight based on the filetype
+:set background=dark
+colorscheme unokai
+let g:airline_theme='lucius' "requires: vim-airline vim-airline-themes
+
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+
+" unicode symbols
+  let g:airline_left_sep = '»'
+  let g:airline_left_sep = '▶'
+  let g:airline_right_sep = '«'
+  let g:airline_right_sep = '◀'
+  let g:airline_symbols.colnr = ' ㏇:'
+  let g:airline_symbols.colnr = ' ℅:'
+  let g:airline_symbols.crypt = '🔒'
+  let g:airline_symbols.linenr = '☰'
+  let g:airline_symbols.linenr = ' ␊:'
+  let g:airline_symbols.linenr = ' ␤:'
+  let g:airline_symbols.linenr = '¶'
+  let g:airline_symbols.maxlinenr = ''
+  let g:airline_symbols.maxlinenr = '㏑'
+  let g:airline_symbols.branch = '⎇'
+  let g:airline_symbols.paste = 'ρ'
+  let g:airline_symbols.paste = 'Þ'
+  let g:airline_symbols.paste = '∥'
+  let g:airline_symbols.spell = 'Ꞩ'
+  let g:airline_symbols.notexists = 'Ɇ'
+  let g:airline_symbols.whitespace = 'Ξ'
+
+" powerline symbols
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.colnr = ' :'
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ' :'
+  let g:airline_symbols.maxlinenr = '☰ '
+  let g:airline_symbols.dirty='⚡'
+
+set viminfo='10,\"100,:20,%,n~/.viminfo
+
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
+
+" NERDTree
+nnoremap <leader>t :NERDTreeToggle<CR>
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+
+" Visible ruler toggle
+nnoremap <Leader>cc :set colorcolumn=80<cr>
+nnoremap <Leader>ncc :set colorcolumn-=80<cr>
